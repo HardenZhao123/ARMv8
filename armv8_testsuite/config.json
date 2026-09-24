@@ -1,6 +1,0 @@
-{
-    "paths": {
-        "assembler": "./solution/assemble",
-        "emulator": "./solution/emulate"
-    }
-}
