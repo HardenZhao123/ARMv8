@@ -1,0 +1,5 @@
+kernel=kernel8.img
+arm_64bit=1
+[all]
+gpio=13,17,18,23,24,25,27=op,dh
+gpio=21,26=ip,pu

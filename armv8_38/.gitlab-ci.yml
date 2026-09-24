@@ -1,0 +1,45 @@
+---
+build:
+  image: gcc
+  stage: build
+  # instead of calling g++ directly you can also use some build toolkit like make
+  # install the necessary build tools when needed
+  # before_script:
+  #   - apt update && apt -y install make autoconf
+  script:
+    - make -C src
+  artifacts:
+    paths:
+      - src/assemble
+      - src/emulate
+
+# run tests using the binary built before
+test:
+  image: python:3.10
+  stage: test
+  needs: [build]
+  before_script:
+    - git clone --depth 1 https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.doc.ic.ac.uk/teaching-fellows/armv8_testsuite.git
+    - pip install -r armv8_testsuite/requirements.txt
+    - ln -s ../src armv8_testsuite/solution
+  script:
+    - cd armv8_testsuite && ./run
+  after_script:
+    - ./junit.py armv8_testsuite > results.xml
+  artifacts:
+    when: always
+    paths:
+      - armv8_testsuite/test/
+      - results.xml
+    reports:
+      junit: results.xml
+
+build_doc:
+  image: texlive/texlive
+  stage: build
+  script:
+    - make -C doc
+  artifacts:
+    paths:
+      - doc/Checkpoint.pdf
+      - doc/Report.pdf

@@ -1,0 +1,16 @@
+solution
+__pycache__
+*.pyc
+*.o
+test/actual_results
+.venv
+tests/res/outfiles
+.vscode
+
+**/__pycache__/
+
+# Dev stuff
+non_student/default_solution
+.pytest_cache
+.mypy_cache
+
